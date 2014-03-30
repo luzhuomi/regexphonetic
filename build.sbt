@@ -1,12 +1,17 @@
 import AssemblyKeys._
 
+import SonatypeKeys._
+
+sonatypeSettings
+
+
 name := "regexphonetic"
 
 organization := "com.github.luzhuomi"
 
 version := "0.1.0-SNAPSHOT"
 
-scalaVersion := "2.9.2"
+// scalaVersion := "2.9.2"
 
 
 resolvers += "Apache HBase" at "https://repository.apache.org/content/repositories/releases"
@@ -23,20 +28,9 @@ seq(assemblySettings: _*)
 
 mergeStrategy in assembly <<= (mergeStrategy in assembly) { (old) =>
   {
+    case PathList("log4j.properties") => MergeStrategy.discard
+    case PathList("META-INF", xs @ _*) => MergeStrategy.discard
     case _ => MergeStrategy.last // leiningen build files
-  }
-}
-
-excludedFiles in assembly := { (bases: Seq[File]) =>
-  bases.filterNot(_.getAbsolutePath.contains("seshet")) flatMap { base => 
-    //Exclude all log4j.properties from other peoples jars
-    ((base * "*").get collect {
-      case f if f.getName.toLowerCase == "log4j.properties" => f
-    }) ++ 
-    //Exclude the license and manifest from the exploded jars
-    ((base / "META-INF" * "*").get collect {
-      case f => f
-    })
   }
 }
 
@@ -44,14 +38,6 @@ excludedFiles in assembly := { (bases: Seq[File]) =>
 publishMavenStyle := true
 
 
-publishTo <<= (version) { version: String =>
-  val nexus = "https://oss.sonatype.org/"
-  if (version.trim.endsWith("SNAPSHOT")) {
-    Some("snapshots" at nexus + "content/repositories/snapshots")
-   } else {
-    Some("releases" at nexus + "service/local/staging/deploy/maven2")
-  }
-}
 
 publishArtifact in Test := false
 

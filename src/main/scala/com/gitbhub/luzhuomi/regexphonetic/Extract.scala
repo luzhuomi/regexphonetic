@@ -51,7 +51,7 @@ object Extract {
       val maxLength = (D.values(consonants) ++ D.values(vowels)).map(_.length).max
 
       // prefices
-      val p = w.take(maxLength).map(_.toLowerCase)
+      val p = w.take(maxLength).map(_.toLower)
       // scala inits "abc".inits.toList = List(abc, ab, a, ""), hence no need to reverse before tailing, because we want to exclude ""
       val prefices = p.inits.toList.reverse.tail.reverse
 

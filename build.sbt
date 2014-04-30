@@ -9,7 +9,7 @@ name := "regexphonetic"
 
 organization := "com.github.luzhuomi"
 
-version := "0.1.0-SNAPSHOT"
+version := "0.1.1-SNAPSHOT"
 
 // scalaVersion := "2.9.2"
 

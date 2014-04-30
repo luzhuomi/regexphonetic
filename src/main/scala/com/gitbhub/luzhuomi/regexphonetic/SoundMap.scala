@@ -13,13 +13,19 @@ object SoundMap {
     case SoundMap (rowIDs, colIDs, rowScores, colScores) => SoundMap ( colIDs, rowIDs, colScores, rowScores)
   } // transpose
 
+
+  def parseSoundMap(fp:String) : SoundMap = {
+  	parseSoundMapFromBufferedSource(Source.fromFile(fp))
+  }
+
+
   // option #1
   // using side effect to read file directly
-  // downside requires using var instead of val
-  def parseSoundMap(fp:String) : SoundMap = {
+  // downside requires using var instead of val  
+  def parseSoundMapFromBufferedSource(bs:scala.io.BufferedSource) : SoundMap = {
     // var colIDs : List[String] = List()
     var soundMap = emptyMap
-    for (line <- Source.fromFile(fp).getLines()) {
+    for (line <- bs.getLines()) {
       if (soundMap.colIDs.length == 0) {
 	parseHeader(line) match {
 	  case (_ :: columnIDs) => { 
